@@ -8,19 +8,36 @@ var app = require('../app');
 var debug = require('debug')('i-promise-server:server');
 var http = require('http');
 
+var path = require('path');
+
+var https = require('https');
+var fs = require('fs');
+
+var privateKey = fs.readFileSync(path.join(__dirname,'./certificate/private.pem'),'utf8');
+var certificate = fs.readFileSync(path.join(__dirname,'./certificate/file.crt'),'utf8');
+var credentials = {key:privateKey,cert:certificate};
+
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+var sslport = 3001;
+
 app.set('port', port);
+app.set('sslport',sslport);
 
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 
+
+httpsServer.listen(sslport);
+httpsServer.on('error', onError);
+httpsServer.on('listening', onListening);
 /**
  * Listen on provided port, on all network interfaces.
  */
