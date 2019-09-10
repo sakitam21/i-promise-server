@@ -9,7 +9,6 @@ var debug = require('debug')('i-promise-server:server');
 var http = require('http');
 
 var path = require('path');
-
 var https = require('https');
 var fs = require('fs');
 
@@ -22,7 +21,7 @@ var credentials = {key:privateKey,cert:certificate};
  */
 
 var port = normalizePort(process.env.PORT || '3000');
-var sslport = 3001;
+var sslport = '3001';
 
 app.set('port', port);
 app.set('sslport',sslport);
@@ -36,8 +35,6 @@ var httpsServer = https.createServer(credentials, app);
 
 
 httpsServer.listen(sslport);
-httpsServer.on('error', onError);
-httpsServer.on('listening', onListening);
 /**
  * Listen on provided port, on all network interfaces.
  */
